@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">   <!-- 파비콘 -->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/dropdowns.css">
+    <link rel="stylesheet" type="text/css" href="css/champion-sprites.css">
+    <link rel="stylesheet" type="text/css" href="css/item-sprites.css">
+    <link rel="stylesheet" type="text/css" href="css/rune-sprites.css">
+    <link rel="stylesheet" type="text/css" href="css/spell-sprites.css">
+    <link rel="stylesheet" type="text/css" href="css/passive-sprites.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <title>원본</title>     <!-- 타이틀 -->
+</head>
+<script>
+    let champ; // 전역 변수로 선언
+
+    $.ajax({
+        type: "get",
+        url: "http://ddragon.leagueoflegends.com/cdn/13.24.1/data/ko_KR/champion.json",
+        success: function (data) {
+            var champions = Object.values(data.data); // 챔피언 데이터 배열 추출
+            champ = champions;
+
+            champ.sort(function(a, b) {
+                var nameA = a.name.toUpperCase();
+                var nameB = b.name.toUpperCase();
+                if (nameA < nameB) {
+                    return -1;
+                }
+                if (nameA > nameB) {
+                    return 1;
+                }
+                return 0;
+            });
+            // console.log(champ);
+        }
+    });
+    $(document).ready(function () {
+        enableSearch("#left-champ-search");
+    });
+
+        function enableSearch(parent) {
+            var searchBar = $(parent)
+            searchBar.on("keyup", function() {
+                var input = $(this).val();
+                searchItems(input, parent);
+            });
+        }
+    function createBoxes() {
+
+        var boxes = champ; // 예시로 사용되는 배열
+        var searchInput = document.getElementById("left-champ-search");
+        var searchText = searchInput.value.toLowerCase();
+
+        var boxContainer = document.getElementById("boxContainer");
+        boxContainer.innerHTML = ""; // 기존 요소 초기화
+        for(var i=0; boxes.length; i++){
+            var championName = boxes[i].name; // 예시로 사용되는 챔피언 이름
+            console.log(championName);
+
+            // 검색어가 존재하고 현재 챔피언 이름에 검색어가 포함되지 않으면 요소를 생성하지 않음
+            if (searchText && !championName.toLowerCase().includes(searchText)) {
+                return;
+            }
+
+            var colElement = document.createElement("div");
+            colElement.classList.add("col-3", "bg-hover", "pt-2");
+
+            var imgElement = document.createElement("img");
+            imgElement.src = "https://ddragon.leagueoflegends.com/cdn/13.24.1/img/champion/"+champ[i].id+".png";
+            imgElement.classList.add("portrait", "sprite-champ");
+            imgElement.style.width = "61.25px"; // 이미지 크기 지정
+            imgElement.style.height = "61.25px"; // 이미지 크기 지정
+            colElement.appendChild(imgElement);
+
+            var rowElement = document.createElement("div");
+            rowElement.classList.add("row");
+
+            var pElement = document.createElement("p");
+            pElement.classList.add("text-center", "champ-name", "mx-auto");
+            pElement.textContent = championName;
+            rowElement.appendChild(pElement);
+
+            colElement.appendChild(rowElement);
+
+            boxContainer.appendChild(colElement);
+        }
+
+    }
+</script>
+<body>
+<div id="wrap">
+    <!-- 헤더영역 -->
+    <header id="header">
+        <div class="inner">
+            <!-- 로고 -->
+            <h1><a href="#"><img src="resource/img/logo.png" alt="Calc.lol 로고"></a></h1>
+
+            <!-- 메뉴 -->
+            <nav>
+                <ul class="gnb">
+                    <li><a href="#">공지사항</a></li>
+                    <li><a href="#">딜미터기</a></li>
+                    <li><a href="#">커뮤니티</a></li>
+                </ul>
+            </nav>
+
+            <!--로그인 회원가입 버튼 -->
+            <ul class="util">
+                <li><a href="#"><button type="button" value="로그인">로그인</button></a></li>
+                <li><a href="#"><button type="button" value="회원가입">회원가입</button></a></li>
+            </ul>
+        </div>
+    </header>
+    <!-- 헤더영역 E -->
+
+    <!-- 메인영역 -->
+    <main id="main">
+        <section id="sectionB"> <!-- 배경영상 -->
+            <video class="video" src="https://www.leagueoflegends.com/static/hero-blurred-77cd03702790edd87c7609df91d5c7d5.mp4" autoplay muted loop></video>
+        </section> <!-- 배경영상 E -->
+        <section id="sectionF">
+            <div id="dealmeterL">
+                <ul class="ul_top"> <!-- 게이지 박스 -->
+                    <li>
+                        <div class="health-box rounded"> <!-- HP 박스 -->
+                            <div class="row ml-0 health-bar rounded" id="left-hp-bar" style="width: 100%;"> <!-- HP 게이지 -->
+
+                            </div>
+
+                        </div>
+                        <div class="resource-box rounded"> <!-- MP 박스 -->
+                            <div class="resource-bar rounded resourceless" id="left-rsc-bar" style="width: 100px;"></div>
+                        </div>
+                    </li>
+                </ul> <!-- 게이지 박스 E -->
+                <ul>
+                    <li>
+                        <div class="col px-1">
+
+                            <div class="dropright">
+                                <div class="dropright">
+                                    <button class="btn btn-blue mt-1 sprite-champ"type="button" id="left-champ-dropdown" data-toggle="dropdown" onclick="createBoxes()">
+                                        <img class="portrait img-fluid mx-auto champ-img" src="" name="" id="left-champ-portrait" data-toggle="tooltip" data-placement="bottom">
+
+                                    </button>
+                                    <div class="dropdown-menu dropdown-multicol" id="left-champ-list">
+                                        <input class="form-control mx-auto my-0 sticky" type="text" placeholder="Search..." id="left-champ-search" autocomplete="off">
+                                        <div class="row mx-auto" id="boxContainer">
+                                            <!-- JavaScript로 후처리될 요소를 동적으로 생성 -->
+                                        </div>
+                                    </div>
+                                    <!--                            <div class="dropright">-->
+                                    <!--                                <button class="btn btn-red dropdown-toggle btn-block mt-1" type="button" id="left-champ-dropdown" data-toggle="dropdown" onclick="createBoxes()" aria-haspopup="true" aria-expanded="false">-->
+                                    <!--                                    <img class="portrait img-fluid mx-auto champ-img" src="" name="" id="left-champ-portrait" data-toggle="tooltip" data-placement="bottom">-->
+
+                                    <!--                                </button>-->
+                                    <!--                                <div class="dropdown-menu dropdown-multicol" id="left-champ-list" aria-labelledby="dropdownMenuButton">-->
+                                    <!--                                    <input class="form-control mx-auto my-0 sticky" type="text" placeholder="Search..." id="left-champ-search" autocomplete="off">-->
+                                    <!--                                    <div class="row mx-auto" id="boxContainer">-->
+                                    <!--                                        &lt;!&ndash; JavaScript로 후처리될 요소를 동적으로 생성 &ndash;&gt;-->
+                                    <!--                                    </div>-->
+                                    <!--                                </div>-->
+                                    <!--                            </div>-->
+                                    <!--                                    <button class="btn btn-blue mt-1" type="button" id="left-champ-dropdown" data-toggle="dropdown" onclick="createBoxes()">-->
+                                    <!--                                        <img class="portrait img-fluid mx-auto champ-img" src="" name="" id="left-champ-portrait" data-toggle="tooltip" data-placement="bottom">-->
+                                    <!--                                        <div class="dropdown-menu dropdown-multicol" id="left-champ-list">-->
+                                    <!--                                            <input class="form-control mx-auto my-0 sticky" type="text" placeholder="Search..." id="left-champ-search" autocomplete="off">-->
+                                    <!--                                            <div class="row mx-auto">-->
+
+                                    <!--                                            </div>-->
+                                    <!--                                        </div>-->
+                                    <!--                                    </button>-->
+
+                                    <!--                                </div>-->
+                                    <!--                            </div>-->
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </li>
+
+                </ul>
+                <ul>
+                    <li>30</li>
+                </ul>
+            </div>
+            <div id="dealmeterR">
+                <ul class="ul_top">
+                    <li>
+                        <div class="health-box rounded">
+                            <div class="row health-bar rounded ml-0" id="right-hp-bar" style="width: 100%;">
+
+                            </div>
+                        </div>
+                        <div class="resource-box rounded">
+                            <div class="resource-bar rounded resourceless" id="right-rsc-bar" style="width: 100%;"></div>
+
+                        </div>
+                    </li>
+                </ul>
+                <ul class="ul">
+                </ul>
+                <ul>
+                    <li>30</li>
+                </ul>
+            </div>
+        </section>
+        <section id="sectionR">
+
+        </section>
+
+    </main>
+    <script src="js/page.js"></script>
+    <!-- 메인영역 E -->
+
+    <!-- 푸터영역 -->
+    <footer>
+
+    </footer>
+    <!-- 푸터영역 E -->
+</div>
+</body>
+</html>
