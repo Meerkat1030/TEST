@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    modifyViewableElements();
+    // modifyViewableElements();
     //Enable clicking champs in dropdowns
     addChampReplacement();
     //Initialize default champ portrait
