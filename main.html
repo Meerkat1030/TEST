@@ -37,6 +37,7 @@
     </style>
 </head>
 <script>
+    // 챔피언 정보 ajax로 받아오기
     let champ; // 전역 변수로 선언
 
     $.ajax({
@@ -60,19 +61,20 @@
             console.log(champ);
         }
     });
+    // end
 
-    // 챔피언 초상화 클릭후 search에서 이름으로 검색하는 함수들
-    $(document).ready(function () {
-        enableSearch("#left-champ-search");
-    });
-
-    function enableSearch(parent) {
-        var searchBar = $(parent)
-        searchBar.on("keyup", function() {
-            var input = $(this).val();
-            // searchItems(input, parent);
-        });
-    }
+    // // 챔피언 초상화 클릭후 search에서 이름으로 검색하는 함수들
+    // $(document).ready(function () {
+    //     enableSearch("#left-champ-search");
+    // });
+    //
+    // function enableSearch(parent) {
+    //     var searchBar = $(parent)
+    //     searchBar.on("keyup", function() {
+    //         var input = $(this).val();
+    //         // searchItems(input, parent);
+    //     });
+    // }
 
     // 챔피언의 스킬정보와 디테일한 스텟정보를 받아오는 함수
     function detailedChamp(id, callback){
@@ -114,6 +116,7 @@
 //
 //
 //     }
+    // 선택한 챔피언의 div img id값으로 선택
     function selectObject(event) {
         var clickedDiv = event.currentTarget;
         var imgElement = clickedDiv.querySelector("img");
@@ -125,6 +128,7 @@
         // 필요한 작업을 수행합니다.
 
     }
+
     // 이미지를 검색하는 함수
     function searchChampById(imgId) {
         var champion = champ.find(function(champion) {
@@ -139,6 +143,8 @@
             console.log("해당 imgId를 가진 챔피언을 찾을 수 없습니다.");
         }
     }
+
+    // 받은 이미지로 spell정보 받아오기
     function setChampSpells(id){
         console.log("setChampSpells 진입성공");
         detailedChamp(id, function(dtch) {
@@ -181,7 +187,7 @@
 
 
     // 사용 예시
-
+    // api속 챔피언 갯수만큼 박스 생성
     function createBoxes() {
 
         var boxes = champ; // 예시로 사용되는 배열
@@ -217,8 +223,8 @@
             var imgElement = document.createElement("img");
             imgElement.src = "https://ddragon.leagueoflegends.com/cdn/13.24.1/img/champion/"+champ[i].id+".png";
             imgElement.classList.add("portrait", "sprite");
-            imgElement.style.width = "61.25px"; // 이미지 크기 지정
-            imgElement.style.height = "61.25px"; // 이미지 크기 지정
+             // imgElement.style.width = "90%"; // 이미지 크기 지정
+             // imgElement.style.height = "90%"; // 이미지 크기 지정
             imgElement.id = champ[i].id; // 이미지에 id 할당
             colElement.appendChild(imgElement);
 
@@ -294,13 +300,15 @@
                                     <button class="btn btn-blue mt-1"type="button" id="left-champ-dropdown" data-toggle="dropdown" onclick="createBoxes()" aria-haspopup="true" aria-expanded="false">
                                         <img class="img-fluid mx-auto" src="" name="" id="left-champ-portrait" data-toggle="tooltip" data-placement="bottom">
 <!--                                        <img class="portrait img-fluid mx-auto champ-img sprite-Aatrox" src="" name="Aatrox" id="left-champ-portrait" data-toggle="tooltip" data-placement="bottom" data-original-title="Aatrox" style="width: 45%; padding-top: 45%;">-->
+
                                     </button>
-                                    <div class="dropdown-menu dropdown-multicol" id="left-champ-list" aria-labelledby="dropdownMenuButton">
+                                    <div class="dropdown-menu dropdown-multicol" id="left-champ-list" aria-labelledby="dropdownMenuButton" x-placement="right-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(228px, 0px, 0px);">
                                         <input class="form-control mx-auto my-0 sticky" type="text" placeholder="Search..." id="left-champ-search" autocomplete="off">
                                         <div class="row mx-auto" id="boxContainer">
                                             <!-- JavaScript로 후처리될 요소를 동적으로 생성 -->
                                         </div>
                                     </div>
+
                                     <!--                            <div class="dropright">-->
                                     <!--                                <button class="btn btn-red dropdown-toggle btn-block mt-1" type="button" id="left-champ-dropdown" data-toggle="dropdown" onclick="createBoxes()" aria-haspopup="true" aria-expanded="false">-->
                                     <!--                                    <img class="portrait img-fluid mx-auto champ-img" src="" name="" id="left-champ-portrait" data-toggle="tooltip" data-placement="bottom">-->

@@ -1,3 +1,4 @@
+// 챔피언 초상화 클릭후 search에서 이름으로 검색하는 함수들
 $(document).ready(function () {
     enableSearch("#left-champ-search");
 });
@@ -33,3 +34,4 @@ function searchItems(input, parent) {
         }
     }
 }
+// end
